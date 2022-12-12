@@ -1,0 +1,2 @@
+class MasterDecksController < ApplicationController
+end

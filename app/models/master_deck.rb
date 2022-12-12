@@ -1,0 +1,2 @@
+class MasterDeck < ApplicationRecord
+end

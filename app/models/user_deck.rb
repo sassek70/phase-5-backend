@@ -1,0 +1,2 @@
+class UserDeck < ApplicationRecord
+end
