@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  resources :games
-  resources :user_games
-  resources :user_decks
-  resources :master_decks
-  resources :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :games, only: [:create]
+  resources :user_games, only: [:create]
+  resources :user_decks, only: [:create, :destroy]
+  resources :master_decks, only: [:create]
+  resources :users, only: [:create, :update, :destroy]
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+
+  # testing rails fetch
+  get '/get_card', to: 'master_decks#get_card'
 end
