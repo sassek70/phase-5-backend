@@ -1,2 +1,0 @@
-class UserDecksController < ApplicationController
-end

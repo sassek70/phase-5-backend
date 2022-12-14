@@ -1,4 +1,4 @@
-class MasterDecksController < ApplicationController
+class CardsController < ApplicationController
     require 'rest-client'
 
     # Testing rails fetch
