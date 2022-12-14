@@ -9,4 +9,11 @@ class SessionsController < ApplicationController
             render json: { error: "Invalid username or password" }, status: :unauthorized
         end
     end
+
+    def existing_token
+            # JWT params put the token on the key "_json"
+            token = JWT.decode(params[:_json], ENV['JWT_TOKEN'])[0]
+            user = User.find_by(id: token['auth_token_id'])
+            render json: user, status: :ok
+    end
 end

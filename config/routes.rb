@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+  post '/existingtoken', to: 'sessions#existing_token'
 
 
   # testing rails fetch
