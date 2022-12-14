@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   post '/existingtoken', to: 'sessions#existing_token'
+  post '/gamelobby', to: 'user_games#create_key'
+
 
 
   # testing rails fetch
