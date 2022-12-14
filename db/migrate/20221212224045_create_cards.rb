@@ -1,6 +1,6 @@
-class CreateMasterDecks < ActiveRecord::Migration[7.0]
+class CreateCards < ActiveRecord::Migration[7.0]
   def change
-    create_table :master_decks do |t|
+    create_table :cards do |t|
       t.string :cardName
       t.integer :cardPower
       t.integer :cardDefense

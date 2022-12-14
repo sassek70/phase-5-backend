@@ -1,15 +1,14 @@
 Rails.application.routes.draw do
   resources :games, only: [:create]
-  resources :user_games, only: [:create]
-  resources :user_decks, only: [:create, :destroy]
-  resources :master_decks, only: [:create]
+  resources :user_cards, only: [:create, :destroy]
+  resources :cards, only: [:create]
   resources :users, only: [:create, :update, :destroy]
 
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   post '/existingtoken', to: 'sessions#existing_token'
-  post '/gamelobby', to: 'user_games#create_key'
-
+  post '/gamelobby', to: 'games#create_game'
+  patch '/joingame/:game_token', to: 'games#join_game'
 
 
   # testing rails fetch

@@ -11,14 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_12_12_224603) do
-  create_table "games", force: :cascade do |t|
-    t.string "game_id"
-    t.integer "winning_player_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "master_decks", force: :cascade do |t|
+  create_table "cards", force: :cascade do |t|
     t.string "cardName"
     t.integer "cardPower"
     t.integer "cardDefense"
@@ -28,18 +21,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_12_224603) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_decks", force: :cascade do |t|
+  create_table "games", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "card_id"
+    t.integer "opponent_id"
+    t.boolean "isActive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_games", force: :cascade do |t|
+  create_table "user_cards", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "opponent_id"
-    t.integer "game_id"
-    t.boolean "isActive"
+    t.integer "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
