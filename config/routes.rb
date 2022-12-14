@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   post '/existingtoken', to: 'sessions#existing_token'
-  post '/gamelobby', to: 'games#create_game'
-  patch '/joingame/:game_token', to: 'games#join_game'
+  post 'users/:id/gamelobby', to: 'games#create_game'
+  patch 'users/:id/joingame/:game_key', to: 'games#join_game'
 
 
   # testing rails fetch

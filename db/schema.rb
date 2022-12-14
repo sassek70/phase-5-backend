@@ -22,8 +22,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_12_224603) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "host_user_id"
     t.integer "opponent_id"
+    t.string "game_key"
     t.boolean "isActive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
