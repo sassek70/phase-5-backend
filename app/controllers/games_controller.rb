@@ -18,9 +18,13 @@ class GamesController < ApplicationController
     # end
 
     def join_game
-        game = Game.find_by(game_key: params[:game_key])
-        game.update!(opponent_id: params[:id])
-        render json: {game: game, messages: ["Game joined successfully"]}
+        game = Game.find_by!(game_key: params[:game_key])
+        if game.opponent_id != nil
+            return render json: {error: "Game is full" }, status: :unprocessable_entity
+        else 
+            game.update!(opponent_id: params[:id])
+            render json: game, status: :accepted
+        end
     end
 
     private
