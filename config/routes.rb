@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
 
 mount ActionCable.server => '/cable'
+get '/increase_counter', to: 'game_session#increase_counter'
+
 
 
   # testing rails fetch

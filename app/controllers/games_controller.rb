@@ -23,6 +23,7 @@ class GamesController < ApplicationController
             return render json: {error: "Game is full" }, status: :unprocessable_entity
         else 
             game.update!(opponent_id: params[:id])
+            # GameSessionChannel.broadcast_to game.user, {message: "#{game.opponent_id} has joined the game"}
             render json: game, status: :accepted
         end
     end

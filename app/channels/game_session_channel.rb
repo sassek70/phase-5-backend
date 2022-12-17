@@ -2,11 +2,11 @@ class GameSessionChannel < ApplicationCable::Channel
   def subscribed
     # stream_from "some_channel"
     puts "subscribed"
-    puts params
+    # puts params
     game = Game.find_by(game_key: params[:game_key])
-    
+
     # will create a subscription for a specific feed
-    stream_for game
+    stream_from game
   end
 
   def unsubscribed
