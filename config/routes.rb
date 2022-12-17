@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   patch 'users/:id/joingame/:game_key', to: 'games#join_game'
 
 
+mount ActionCable.server => '/cable'
+
+
   # testing rails fetch
   get '/get_card', to: 'master_decks#get_card'
 end
