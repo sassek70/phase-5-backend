@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :game_actions
   resources :user_cards, only: [:create, :destroy]
   resources :cards, only: [:create]
 
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
 
 
 mount ActionCable.server => '/cable'
-get '/increase_counter', to: 'game_session#increase_counter'
+post '/increase_counter', to: 'game_session#increase_counter'
 
 
 

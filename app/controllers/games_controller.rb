@@ -7,6 +7,7 @@ class GamesController < ApplicationController
         # game_key = key_generator(user_id: params[:user_id], game_key: new_game.game_key)
         # game_key = key_generator
         # render json: {game_key: game_key.gsub(".", "-"), new_game: new_game}, status: :ok
+        GameAction.create!(game_key: new_game.game_key, count: 0)
         render json: new_game, status: :ok
     end
 
