@@ -13,6 +13,7 @@ class GameSessionChannel < ApplicationCable::Channel
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
     puts "unsubscribed"
+    stop_all_streams
 
   end
 end
