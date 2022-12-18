@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :game_actions
   resources :user_cards, only: [:create, :destroy]
   resources :cards, only: [:create]
 
@@ -11,6 +12,11 @@ Rails.application.routes.draw do
   post '/existingtoken', to: 'sessions#existing_token'
   post 'users/:id/creategame', to: 'games#create_game'
   patch 'users/:id/joingame/:game_key', to: 'games#join_game'
+
+
+mount ActionCable.server => '/cable'
+post '/increase_counter', to: 'game_session#increase_counter'
+
 
 
   # testing rails fetch

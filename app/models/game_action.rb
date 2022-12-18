@@ -1,0 +1,2 @@
+class GameAction < ApplicationRecord
+end
