@@ -16,4 +16,16 @@ class GameSessionController < ApplicationController
     end
 
 
+    def create_random_deck
+        p "hit method"
+        random_deck = []
+        10.times do 
+            card = Card.all.sample
+            player_card = UserCard.create!(user_id: params[:player_id], card_id: card.id, game_key: params[:game_key])
+            random_deck << player_card.card
+            p "hit loop"
+        end
+        render json: random_deck, status: :ok
+    end
+
 end

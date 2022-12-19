@@ -13,11 +13,11 @@ end
 
 p "Cards created successfully"
 
-p "Assigning cards..."
+# p "Assigning cards..."
 
-seeded_cards = Card.all
-seeded_cards.each { |card| UserCard.create(user_id: rand(1..2), card_id: card.id)}
+# seeded_cards = Card.all
+# seeded_cards.each { |card| UserCard.create(user_id: rand(1..2), card_id: card.id)}
 
-p "Cards assigned"
+# p "Cards assigned"
 
 p "Seeding Complete"

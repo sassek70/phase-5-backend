@@ -11,11 +11,12 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   post '/existingtoken', to: 'sessions#existing_token'
   post 'users/:id/creategame', to: 'games#create_game'
-  patch 'users/:id/joingame/:game_key', to: 'games#join_game'
-
-
-mount ActionCable.server => '/cable'
-post '/increase_counter', to: 'game_session#increase_counter'
+  patch '/joingame/:game_key', to: 'games#join_game'
+  
+  
+  mount ActionCable.server => '/cable'
+  post '/increase_counter', to: 'game_session#increase_counter'
+  post '/create_random_deck', to: 'game_session#create_random_deck'
 
 
 

@@ -47,6 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_17_162456) do
   create_table "user_cards", force: :cascade do |t|
     t.integer "user_id"
     t.integer "card_id"
+    t.string "game_key"
+    t.boolean "isActive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
