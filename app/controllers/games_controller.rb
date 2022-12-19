@@ -7,7 +7,6 @@ class GamesController < ApplicationController
         # game_key = key_generator(user_id: params[:user_id], game_key: new_game.game_key)
         # game_key = key_generator
         # render json: {game_key: game_key.gsub(".", "-"), new_game: new_game}, status: :ok
-        GameAction.create!(game_key: new_game.game_key, count: 0)
         render json: new_game, status: :ok
     end
 
@@ -24,9 +23,9 @@ class GamesController < ApplicationController
             return render json: {error: "Game is full" }, status: :unprocessable_entity
         else 
             game.update!(opponent_id: params[:id])
-            5.times do
-                UserCard.create!(user_id: params[:id])
-            end
+            # 5.times do
+            #     UserCard.create!(user_id: params[:id])
+            # end
             # GameSessionChannel.broadcast_to game.user, {message: "#{game.opponent_id} has joined the game"}
             render json: game, status: :accepted
         end
