@@ -20,5 +20,5 @@ post '/increase_counter', to: 'game_session#increase_counter'
 
 
   # testing rails fetch
-  get '/get_card', to: 'master_decks#get_card'
+  get '/get_card', to: 'cards#get_card'
 end

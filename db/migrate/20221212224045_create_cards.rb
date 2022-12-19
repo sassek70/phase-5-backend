@@ -6,6 +6,9 @@ class CreateCards < ActiveRecord::Migration[7.0]
       t.integer :cardDefense
       t.string :cardDescription
       t.integer :cardCost
+      t.string :artist
+      t.string :image
+      t.integer :mtgo_id
 
       t.timestamps
     end

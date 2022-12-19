@@ -17,13 +17,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_17_162456) do
     t.integer "cardDefense"
     t.string "cardDescription"
     t.integer "cardCost"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "game_actions", force: :cascade do |t|
-    t.integer "count"
-    t.string "game_key"
+    t.string "artist"
+    t.string "image"
+    t.integer "mtgo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -33,6 +29,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_17_162456) do
     t.integer "opponent_id"
     t.string "game_key"
     t.boolean "isActive"
+    t.integer "winning_player_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "player_actions", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "target_player_id"
+    t.integer "card_id"
+    t.string "game_id"
+    t.integer "action_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
