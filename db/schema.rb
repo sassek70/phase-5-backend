@@ -28,7 +28,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_17_162456) do
     t.integer "host_user_id"
     t.integer "opponent_id"
     t.string "game_key"
-    t.boolean "isActive"
     t.integer "winning_player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -47,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_17_162456) do
   create_table "user_cards", force: :cascade do |t|
     t.integer "user_id"
     t.integer "card_id"
-    t.string "game_key"
+    t.integer "game_id"
     t.boolean "isActive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

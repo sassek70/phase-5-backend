@@ -22,12 +22,9 @@ class GamesController < ApplicationController
         if game.opponent_id != nil
             return render json: {error: "Game is full" }, status: :unprocessable_entity
         else 
-            game.update!(opponent_id: params[:id])
-            # 5.times do
-            #     UserCard.create!(user_id: params[:id])
-            # end
-            # GameSessionChannel.broadcast_to game.user, {message: "#{game.opponent_id} has joined the game"}
-            render json: game, status: :accepted
+            game.update!(opponent_id: params[:opponent_id])
+            GameSessionChannel.broadcast_to game, {game: game}
+             render json: game, status: :accepted
         end
     end
 
