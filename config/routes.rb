@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   
   mount ActionCable.server => '/cable'
   post '/increase_counter', to: 'game_session#increase_counter'
-  post '/create_random_deck', to: 'game_session#create_random_deck'
+  post '/create_random_deck', to: 'user_cards#create_random_deck'
 
 
 
