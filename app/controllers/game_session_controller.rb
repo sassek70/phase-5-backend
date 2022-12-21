@@ -8,11 +8,11 @@ class GameSessionController < ApplicationController
         # action.update!(counter: new_count)
 
         # game_key = params[:game_key]
-        GameSessionChannel.broadcast_to game, {count: new_count}
+        GameSessionChannel.broadcast_to game, {action: "counter", count: new_count}
         # GameSessionChannel.broadcast_to game, "hello"
         # serialized_data = ActiveModelSerializers::Adapter::Json.new(GameSerializer.new(game)).serializable_hash
         # ActionCable.server.broadcast game, new_count
-        render json: new_count, status: :ok
+        # render json: new_count, status: :ok
     end
 
 
