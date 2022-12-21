@@ -5,14 +5,8 @@ class UserCardsController < ApplicationController
         cards_with_details = {}
         game = Game.find(params[:game_id])
         game_cards = UserCard.where("game_id = ?", game.id)
-        puts "***************************************"
-        puts game_cards.count
-        puts "***************************************"
-
-        # game_cards.each {|card| }
         GameSessionChannel.broadcast_to game, {action: "all-cards", game_cards: game_cards, card_map: get_card_map(game_cards)}
         render json: game_cards, status: :ok
-        # debugger
     end
 
     def create_random_deck
