@@ -8,14 +8,16 @@ class PlayerActionsController < ApplicationController
         # card = get_card
         user = User.find(params[:player_id])
         game = Game.find(params[:game_id])
-        card = UserCard.find(params[:card_id])
+        user_card = UserCard.find_by!(id: params[:card_id])
 
         # p game
         # p user
         # p card
-        debugger
-        new_action = PlayerAction.create!(attacking_player_id: user.id, attacking_card_id: card.id, game_id: game.id)
-        # GameSessionChannel.broadcast_to game, {action: "attack-declared", power: card.cardPower, toughness: card.cardDefense}
+        # debugger
+        new_action = PlayerAction.create!(attacking_player_id: user.id, attacking_card_id: user_card.id, game_id: game.id)
+        debugger 
+        # relationship issue causing line 20 to through errors
+        GameSessionChannel.broadcast_to game, {action: "attack-declared", player_action: PlayerActionSerializer.new(new_action), power: user_card.card.cardPower, toughness: user_card.card.cardDefense}
         render json: card, status: :ok
     end
 

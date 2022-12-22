@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_000339) do
     t.integer "destroyed_card_id"
     t.boolean "both_destroyed", default: false
     t.boolean "draw", default: false
-    t.boolean "unblocked_damage", default: false
+    t.boolean "unblocked_attack", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

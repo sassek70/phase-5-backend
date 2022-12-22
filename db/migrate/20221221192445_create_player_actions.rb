@@ -10,7 +10,7 @@ class CreatePlayerActions < ActiveRecord::Migration[7.0]
       t.integer :destroyed_card_id
       t.boolean :both_destroyed, default: false
       t.boolean :draw, default: false
-      t.boolean :unblocked_damage, default: false
+      t.boolean :unblocked_attack, default: false
 
       t.timestamps
     end
