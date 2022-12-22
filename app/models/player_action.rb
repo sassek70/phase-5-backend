@@ -1,4 +1,6 @@
 class PlayerAction < ApplicationRecord
-    # belongs_to :user
-    # belongs_to :game
+
+    belongs_to :user_card
+    belongs_to :game
+
 end
