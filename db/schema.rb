@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_22_000339) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_22_145310) do
   create_table "cards", force: :cascade do |t|
     t.string "cardName"
     t.integer "cardPower"
@@ -35,11 +35,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_000339) do
     t.integer "opponent_player_health", default: 15
   end
 
+  create_table "player_action_cards", force: :cascade do |t|
+    t.integer "user_card_id"
+    t.integer "player_action_id"
+    t.boolean "is_attacking"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "player_actions", force: :cascade do |t|
-    t.integer "attacking_player_id"
-    t.integer "attacking_card_id"
-    t.integer "defending_player_id"
-    t.integer "defending_card_id"
     t.integer "game_id"
     t.integer "winning_card_id"
     t.integer "destroyed_card_id"

@@ -27,7 +27,7 @@ class UserCardsController < ApplicationController
     def get_card_map(game_cards)
         # start with empty object, for each game card, create an adding to the empty object as 
         game_cards.each_with_object({}) do |game_card,hash|
-            hash[game_card.id] = game_card.card
+        hash[game_card.id] = game_card.card
         end
     end
 
