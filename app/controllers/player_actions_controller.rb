@@ -3,27 +3,14 @@ class PlayerActionsController < ApplicationController
     
     
     def attack
-        # game = get_game
-        # user = get_user
-        # card = get_card
         user = User.find(params[:player_id])
         game = Game.find(params[:game_id])
         user_card = UserCard.find_by!(card_id: params[:card_id], game_id: game.id)
-        
-        # p game
-        # p user
-        # p card
-        # debugger
-        # attacking_player_id: user.id, attacking_card_id: user_card.id,
         new_action = PlayerAction.create!(game_id: game.id)
         attack_action_card = PlayerActionCard.create!(player_action_id: new_action.id, user_card_id: user_card.id, is_attacking: true)
-        # debugger 
-        # relationship issue causing line 20 to through errors
         GameSessionChannel.broadcast_to game, {action: "attack-declared", player_action: PlayerActionSerializer.new(new_action), message: "#{user.username} is attacking with #{user_card.card.cardName}. Power: #{user_card.card.cardPower}, Toughness: #{user_card.card.cardDefense}"}
         head :ok
     end
-    
-    
     
     # case 1 = neither card dies = working
     # case 2 = both cards die = working
@@ -33,7 +20,6 @@ class PlayerActionsController < ApplicationController
     # case 6 = defending card dies & some damaged blocked = working
     # case 7 = no defending card = working
     # case 8 = no attacking cards available = edge case
-    
     
     def combat
         
@@ -226,7 +212,7 @@ class PlayerActionsController < ApplicationController
     end
 
     def combat_result(game, attacking_player, messages)
-        GameSessionChannel.broadcast_to game, {action: "combat-results", attacking_player: attacking_player, message: messages}
+        GameSessionChannel.broadcast_to game, {action: "combat-results", attacking_player: attacking_player.id, message: messages}
     end
 
 
