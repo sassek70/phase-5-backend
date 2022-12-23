@@ -10,6 +10,10 @@ class GameSessionChannel < ApplicationCable::Channel
     stream_for game
   end
 
+  # def received(data)
+  #   ActionCable.server.broadcast(@game)
+  # end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
     puts "unsubscribed"
