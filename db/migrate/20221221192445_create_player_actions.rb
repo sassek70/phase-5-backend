@@ -13,6 +13,7 @@ class CreatePlayerActions < ActiveRecord::Migration[7.0]
       t.boolean :both_destroyed, default: false
       t.boolean :draw, default: false
       t.boolean :unblocked_attack, default: false
+      t.boolean :skipped, default: false
 
 
 
