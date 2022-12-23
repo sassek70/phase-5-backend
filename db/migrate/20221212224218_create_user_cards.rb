@@ -4,7 +4,7 @@ class CreateUserCards < ActiveRecord::Migration[7.0]
       t.integer :user_id
       t.integer :card_id
       t.integer :game_id
-      t.boolean :isActive
+      t.boolean :isActive, default: true
       
       t.timestamps
     end

@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_145310) do
     t.integer "user_id"
     t.integer "card_id"
     t.integer "game_id"
-    t.boolean "isActive"
+    t.boolean "isActive", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
