@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/:game_id/game_cards', to: 'user_cards#game_cards'
   post '/game/:game_id/player_actions/attack', to: 'player_actions#attack'
   post '/game/:game_id/player_actions/combat', to: 'player_actions#combat'
+  post '/game/:game_id/player_actions/skip', to: 'player_actions#skip_turn'
 
 
 
