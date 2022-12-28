@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_22_145310) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_28_185122) do
   create_table "cards", force: :cascade do |t|
     t.string "cardName"
     t.integer "cardPower"
     t.integer "cardDefense"
     t.string "cardDescription"
     t.integer "cardCost"
-    t.string "artist"
-    t.string "image"
+    t.string "cardArtist"
+    t.string "cardImage"
     t.integer "mtgo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -71,7 +71,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_22_145310) do
     t.datetime "updated_at", null: false
     t.integer "gamesPlayed"
     t.integer "gamesWon"
-    t.integer "gamesLost"
   end
 
 end

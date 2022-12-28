@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 
+    # skip_before_action :authorize!, only: [:update]
     before_action :authorize!, only: [:update, :delete]
+
 
     def create
         user = User.create!(user_params)
@@ -17,7 +19,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.permit(:username, :password)
+        params.permit(:id, :username, :password, :gamesPlayed, :gamesWon)
     end
 
 end

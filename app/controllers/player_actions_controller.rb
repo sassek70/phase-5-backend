@@ -41,7 +41,7 @@ class PlayerActionsController < ApplicationController
         defend_action_card = PlayerActionCard.create!(player_action_id: player_action.id, user_card_id: defending_user_card.id, is_attacking: false)
         dc = player_action.defending_card
         # debugger
-        GameSessionChannel.broadcast_to game, {action: "defense-declared", message: "#{dc.cardName} is defending the attack from #{ac.cardName}. Power: #{dc.cardPower}, Toughness: #{ac.cardDefense}"}
+        GameSessionChannel.broadcast_to game, {action: "defense-declared", message: "#{dc.cardName} is defending the attack from #{ac.cardName}. Power: #{dc.cardPower}, Toughness: #{dc.cardDefense}"}
         GameSessionChannel.broadcast_to game, {action: "defense-declared", message: "Processing turn"}
         
         # messages = []

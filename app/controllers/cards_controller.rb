@@ -18,20 +18,26 @@ class CardsController < ApplicationController
     end
 
     def get_card
-        # 10.times do
+        cards = []
+        card_count = 0 
+        until cards.length == 10 do
             url = "https://api.scryfall.com/cards/random"
             response = RestClient.get(url)
-            # if response.type_line.include? "Creature"
-                # new_card = Card.create!(cardName: response[:name])
-                    # cardPower: response.power, cardDefense: response.toughness, cardDescription: "#{response.artist}, #{response.image_uris.art_crop}", cardCost: resposne.cmc)
-                # sleep 0.5
-            # else
-                # sleep 0.5
+            parsed = JSON.parse(response)
+            if parsed["type_line"].include? "Creature"
+                p card_count += 1
+                new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardDescription: "#{parsed["artist"]}", image: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
+                # debugger
+                cards << new_card
+                sleep 0.5
+            else
+                p "not a creature"
+                sleep 0.5
                 # return
-            # end
-        # end
-        # render json: new_card
-        render json: response
+            end
+        end
+        render json: cards
+        # render json: parsed["name"]
     end
 end
 
