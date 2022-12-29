@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post '/game/:game_id/player_actions/attack', to: 'player_actions#attack'
   post '/game/:game_id/player_actions/combat', to: 'player_actions#combat'
   post '/game/:game_id/player_actions/skip', to: 'player_actions#skip_turn'
+  patch '/game/:game_key/results', to: 'games#results'
 
 
 

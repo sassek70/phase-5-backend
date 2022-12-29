@@ -1,14 +1,34 @@
+require 'rest-client'
+
+
 p "Creating users..."
 
-User.create(username: "kev", password: "123456", gamesPlayed: 0, gamesWon: 0, gamesLost: 0)
-User.create(username: "test", password: "123456", gamesPlayed: 0, gamesWon: 0, gamesLost: 0)
+User.create(username: "kev", password: "123456", gamesPlayed: 0, gamesWon: 0)
+User.create(username: "test", password: "123456", gamesPlayed: 0, gamesWon: 0)
 
 p "Users created successfully"
 
 p "Creating cards..."
-
-20.times do
-    Card.create!(cardName: Faker::Fantasy::Tolkien.character, cardPower: rand(1..5), cardDefense: rand(1..5), cardDescription:Faker::Fantasy::Tolkien.poem, cardCost: rand(1..4))
+created_cards = 0
+until created_cards == 100 do
+    url = "https://api.scryfall.com/cards/random"
+    response = RestClient.get(url)
+    parsed = JSON.parse(response)
+    if parsed["type_line"].include?("Creature") && parsed["power"] && parsed["toughness"] && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"]
+        new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardArtist: "#{parsed["artist"]}", cardDescription: "Art-crop image provided by: https://scryfall.com/", cardImage: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
+         if new_card.valid?
+            new_card.save
+            created_cards += 1
+            p "card number #{created_cards} created successfully"
+         else
+            p "card invalid"
+         end
+        sleep 0.1
+    else
+        p "not a creature"
+        sleep 0.1
+        # return
+    end
 end
 
 p "Cards created successfully"
