@@ -1,13 +1,15 @@
 class GamesController < ApplicationController
 
 
+    before_action :authorize!, only: [:create_game]
 
     def create_game
         new_game = Game.create!(host_user_id: params[:id])
         user = User.find(params[:id])
         increase_games = user.gamesPlayed + 1
+        user.update!(gamesPlayed: increase_games)
         # debugger
-        # user.update!(gamesPlayed: increase_games)
+        # user.update_attribute(:gamesPlayed, increase_games)
         render json: new_game, status: :ok
     end
 

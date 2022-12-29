@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
         else
             return nil
         end
-        debugger
+        # debugger
     end
     
     def authorize!
