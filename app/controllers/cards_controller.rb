@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-    require 'rest-client'
+    # require 'rest-client'
 
     # Testing rails fetch
     # def get_card
@@ -10,35 +10,35 @@ class CardsController < ApplicationController
     #     render json: response
     # end
 
-    def create
-        10.times do
-            new_card = Card.create!(cardName: Faker::Fantasy::Tolkien.character, cardPower: rand(1..5), cardDefense: rand(1..5), cardDescription:Faker::Fantasy::Tolkien.poem, cardCost: rand(1..4))
-        end
-        render json: Card.all
-    end
+    # def create
+    #     10.times do
+    #         new_card = Card.create!(cardName: Faker::Fantasy::Tolkien.character, cardPower: rand(1..5), cardDefense: rand(1..5), cardDescription:Faker::Fantasy::Tolkien.poem, cardCost: rand(1..4))
+    #     end
+    #     render json: Card.all
+    # end
 
-    def get_card
-        cards = []
-        card_count = 0 
-        until cards.length == 10 do
-            url = "https://api.scryfall.com/cards/random"
-            response = RestClient.get(url)
-            parsed = JSON.parse(response)
-            if parsed["type_line"].include? "Creature"
-                p card_count += 1
-                new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardDescription: "#{parsed["artist"]}", image: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
-                # debugger
-                cards << new_card
-                sleep 0.5
-            else
-                p "not a creature"
-                sleep 0.5
-                # return
-            end
-        end
-        render json: cards
-        # render json: parsed["name"]
-    end
+    # def get_card
+    #     cards = []
+    #     card_count = 0 
+    #     until cards.length == 10 do
+    #         url = "https://api.scryfall.com/cards/random"
+    #         response = RestClient.get(url)
+    #         parsed = JSON.parse(response)
+    #         if parsed["type_line"].include? "Creature"
+    #             p card_count += 1
+    #             new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardDescription: "#{parsed["artist"]}", image: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
+    #             # debugger
+    #             cards << new_card
+    #             sleep 0.5
+    #         else
+    #             p "not a creature"
+    #             sleep 0.5
+    #             # return
+    #         end
+    #     end
+    #     render json: cards
+    #     # render json: parsed["name"]
+    # end
 end
 
 

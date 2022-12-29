@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post '/existingtoken', to: 'sessions#existing_token'
   post 'users/:id/creategame', to: 'games#create_game'
   patch '/joingame/:game_key', to: 'games#join_game'
+  get '/users/:id/stats', to: 'users#stats'
+  get '/leaderboard', to: 'users#leaderboard'
   
   
   mount ActionCable.server => '/cable'
@@ -24,6 +26,7 @@ Rails.application.routes.draw do
   post '/game/:game_id/player_actions/combat', to: 'player_actions#combat'
   post '/game/:game_id/player_actions/skip', to: 'player_actions#skip_turn'
   patch '/game/:game_key/results', to: 'games#results'
+  patch '/:game_key/results', to: 'games#results'
 
 
 

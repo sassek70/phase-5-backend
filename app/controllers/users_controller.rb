@@ -4,6 +4,12 @@ class UsersController < ApplicationController
     before_action :authorize!, only: [:update, :delete]
 
 
+    def leaderboard
+        users = User.all 
+        # users.each |user| {user.gamesWon / user.gamesPlayed}
+        render json: users.order('win_rate DESC'), status: :ok
+    end
+
     def create
         user = User.create!(user_params)
         auth_token = JWT.encode({auth_token_id: user.id, username: user.username}, ENV['JWT_TOKEN'])
@@ -14,6 +20,11 @@ class UsersController < ApplicationController
         user = User.find(params[:id])
         user.update!(user_params)
         render json: user, status: :accepted
+    end
+
+    def stats
+        user = User.find(params[:id])
+        render json: user, status: :ok
     end
 
     private
