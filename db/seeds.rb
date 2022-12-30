@@ -10,11 +10,11 @@ p "Users created successfully"
 
 p "Creating cards..."
 created_cards = 0
-until created_cards == 5 do
+until created_cards == 200 do
     url = "https://api.scryfall.com/cards/random"
     response = RestClient.get(url)
     parsed = JSON.parse(response)
-    if parsed["type_line"].include?("Creature") && parsed["power"] >= "0" && parsed["toughness"] >= "0" && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"]
+    if parsed["type_line"].include?("Creature") && parsed["power"] != nil && parsed["power"] >= "0" && parsed["toughness"] != nil && parsed["toughness"] >= "0" && parsed["image_uris"] != nil && parsed["image_uris"]["art_crop"] != nil && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"] 
         new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardArtist: "#{parsed["artist"]}", cardDescription: "Art-crop image provided by: https://scryfall.com/", cardImage: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
          if new_card.valid?
             new_card.save

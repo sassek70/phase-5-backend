@@ -15,16 +15,16 @@
 # gem "pg"
 #
 # Uncomment 18-20, 23, 25-27
-# default: &default
-#   adapter: postgresql
-#   encoding: unicode
+default: &default
+  adapter: postgresql
+  encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-# development:
-#   <<: *default
-#   database: card_game_backend_development
+development:
+  <<: *default
+  database: card_game_backend_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -57,9 +57,9 @@
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 # Uncomment 60-62
-# test:
-#   <<: *default
-#   database: card_game_backend_test
+test:
+  <<: *default
+  database: card_game_backend_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -82,11 +82,11 @@
 # for a full overview on how database connection configuration can be specified.
 #
 # Uncomment 85-89
-# production:
-#   <<: *default
-#   database: card_game_backend_production
-#   username: card_game_backend
-#   password: <%= ENV["CARD_GAME_BACKEND_DATABASE_PASSWORD"] %>
+production:
+  <<: *default
+  database: card_game_backend_production
+  username: card_game_backend
+  password: <%= ENV["CARD_GAME_BACKEND_DATABASE_PASSWORD"] %>
 
 
 
@@ -98,22 +98,22 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem "sqlite3"
 #
-default: &default
-  adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+# default: &default
+#   adapter: sqlite3
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   timeout: 5000
 
-development:
-  <<: *default
-  database: db/development.sqlite3
+# development:
+#   <<: *default
+#   database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: db/test.sqlite3
+# test:
+#   <<: *default
+#   database: db/test.sqlite3
 
-production:
-  <<: *default
-  database: db/production.sqlite3
+# production:
+#   <<: *default
+#   database: db/production.sqlite3
