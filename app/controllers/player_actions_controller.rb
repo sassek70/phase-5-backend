@@ -27,13 +27,12 @@ class PlayerActionsController < ApplicationController
         defending_player = User.find(params[:player_id])
         game = Game.find_by!(id: params[:game_id])
         player_action = PlayerAction.where("game_id = ?", params[:game_id]).last
-        update_player_health = 0
-        damaged_player = nil
+        # update_player_health = 0
         ac = player_action.attacking_card
         
         if !params[:user_card_id]
             # debugger
-            no_defense(game, player_action, defending_player, damaged_player, update_player_health, ac)
+            no_defense(game, player_action, defending_player, ac)
             return
         end
         
@@ -56,27 +55,17 @@ class PlayerActionsController < ApplicationController
         
 # ******************************************************CASE 2 CASE 2 CASE 2 CASE 2***************************************************** #
     # case 2 = both cards die = working
-        elsif ac.cardPower >= dc.cardDefense && dc.cardPower >= ac.cardDefense
+        elsif ac.cardPower == dc.cardDefense && dc.cardPower >= ac.cardDefense
             defended_action = player_action.update!(both_destroyed: true)
             unblocked_damage = ac.cardPower - dc.cardDefense
-
-            if defending_player.id == game.opponent_id
-                # debugger
-                damaged_player = game.opponent_id
-                update_player_health = game.opponent_player_health - unblocked_damage
-                game.update!(opponent_player_health: update_player_health)
-                GameSessionChannel.broadcast_to game, {action: "update-health", player: "opponent", health: update_player_health}
-            elsif defending_player.id == game.host_user_id
-                # debugger
-
-                damaged_player = game.host_user_id
-                update_player_health = game.host_player_health - unblocked_damage
-                game.update!(host_player_health: update_player_health)
-                GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
+            active_cards_remaining = both_cards_destroyed(game.id, player_action)
+            if active_cards_remaining == 0
+                return trigger_draw_game(game)
             end
 
-            both_cards_destroyed(game.id, player_action)
-            combat_result(game, player_action.attacking_user_card.user, "CASE 2 Both cards have been destroyed A:#{ac.cardPower}/#{ac.cardDefense}, D: #{dc.cardPower}/#{dc.cardDefense}, #{player_action.defending_user_card.user.username} loses #{unblocked_damage} health")
+            # GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
+
+            combat_result(game, player_action.attacking_user_card.user, "CASE 2 Both cards have been destroyed A:#{ac.cardPower}/#{ac.cardDefense}, D: #{dc.cardPower}/#{dc.cardDefense}, #{player_action.defending_user_card.user.username}")
 
 # ******************************************************CASE 3 CASE 3 CASE 3 CASE 3***************************************************** #
     # case 3 = attacking card dies & all damaged blocked = working
@@ -90,12 +79,32 @@ class PlayerActionsController < ApplicationController
 
 
 # ******************************************************CASE 4 CASE 4 CASE 4 CASE 4***************************************************** #
-    # case 4 = attacking card dies & some damaged blocked
+    # case 4 = both cards die & some damaged blocked
 
         elsif ac.cardPower > dc.cardDefense && dc.cardPower >= ac.cardDefense
             defended_action = player_action.update!(winning_card_id: ac.id, both_destroyed: true)
+            unblocked_damage = ac.cardPower - dc.cardDefense
+            active_card_count = both_cards_destroyed(game.id, player_action)
             
-            both_cards_destroyed(game.id, player_action)
+            if defending_player.id == game.opponent_id
+                # damaged_player = game.opponent_id
+                update_player_health = game.opponent_player_health - unblocked_damage
+                if update_player_health <= 0 || active_card_count == 0
+                    results(game, game.host_user_id, active_card_count)
+                else
+                    game.update!(opponent_player_health: update_player_health)
+                end
+                GameSessionChannel.broadcast_to game, {action: "update-health", player: "opponent", health: update_player_health}
+            elsif defending_player.id == game.host_user_id
+                # damaged_player = game.host_user_id
+                update_player_health = game.host_player_health - unblocked_damage
+                if update_player_health <= 0 || active_card_count == 0
+                    results(game, game.opponent_id, active_card_count)
+                else
+                    game.update!(host_player_health: update_player_health)
+                end
+                GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
+            end
             combat_result(game, player_action.attacking_user_card.user, "CASE 4 #{player_action.attacking_user_card.user.username}'s #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense} was destroyed in the attack by #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense}. Remaining #{unblocked_damage} damage has been dealt to #{player_action.defending_user_card.user.username}")
 
 
@@ -105,7 +114,6 @@ class PlayerActionsController < ApplicationController
             
         elsif ac.cardPower == dc.cardDefense && dc.cardPower < ac.cardDefense 
             defended_action = player_action.update!(winning_card_id: ac.id)
-
             update_game_cards(game.id, player_action, dc)
             combat_result(game, player_action.attacking_user_card.user, "CASE 5 #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} was destroyed blocking the attacking #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense}.")    
             # debugger
@@ -115,17 +123,25 @@ class PlayerActionsController < ApplicationController
         elsif ac.cardPower > dc.cardDefense && dc.cardPower < ac.cardDefense
             defended_action = player_action.update!(winning_card_id: ac.id, destroyed_card_id: dc.id)
             unblocked_damage = ac.cardPower - dc.cardDefense
-            update_game_cards(game.id, player_action, dc)
+            active_card_count = update_game_cards(game.id, player_action, dc)
 
             if defending_player.id == game.opponent_id
-                damaged_player = game.opponent_id
+                # damaged_player = game.opponent_id
                 update_player_health = game.opponent_player_health - unblocked_damage
-                game.update!(opponent_player_health: update_player_health)
+                if update_player_health <= 0 || active_card_count == 0
+                    results(game, game.host_user_id, active_card_count)
+                else
+                    game.update!(opponent_player_health: update_player_health)
+                end
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "opponent", health: update_player_health}
             elsif defending_player.id == game.host_user_id
-                damaged_player = game.host_user_id
+                # damaged_player = game.host_user_id
                 update_player_health = game.host_player_health - unblocked_damage
-                game.update!(host_player_health: update_player_health)
+                if update_player_health <= 0 || active_card_count == 0
+                    results(game, game.opponent_id, active_card_count)
+                else
+                    game.update!(host_player_health: update_player_health)
+                end
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
             end
 
@@ -137,18 +153,26 @@ class PlayerActionsController < ApplicationController
 # ******************************************************CASE 7 CASE 7 CASE 7 CASE 7***************************************************** #
     # case 7 = no defending card = working
 
-        def no_defense(game, player_action, defending_player, damaged_player, update_player_health, ac)
+        def no_defense(game, player_action, defending_player, ac)
             
 
             if defending_player.id == game.opponent_id
-                damaged_player = game.opponent_id
+                # damaged_player = game.opponent_id
                 update_player_health = game.opponent_player_health - ac.cardPower
-                game.update!(opponent_player_health: update_player_health)
+                if update_player_health <= 0
+                    results(game, game.host_user_id, nil)
+                else
+                    game.update!(opponent_player_health: update_player_health)
+                end
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "opponent", health: update_player_health}
             elsif defending_player.id == game.host_user_id
-                damaged_player = game.host_user_id
+                # damaged_player = game.host_user_id
                 update_player_health = game.host_player_health - ac.cardPower
-                game.update!(host_player_health: update_player_health)
+                if update_player_health <= 0
+                    results(game, game.opponent_id, nil)
+                else
+                    game.update!(host_player_health: update_player_health)
+                end
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
             end
 
@@ -181,21 +205,20 @@ class PlayerActionsController < ApplicationController
 
     private
 
-    # def get_game
-    #     game = Game.find(params[:game_id])
-    #     game
-    # end
-
-    # def get_user
-    #     user = User.find(params[:player_id])
-    #     user
-    # end
-
-    # def get_card
-    #     card = Card.find(params[:card_id])
-    #     card
-    #     # debugger
-    # end
+    def results(game, winning_user_id, active_card_count)
+        winner = User.find(winning_user_id)
+        increase_wins = winner.gamesWon + 1
+        update_rate = (increase_wins.to_f / winner.gamesPlayed.to_f) * 100
+        if active_card_count == 0
+            return trigger_draw_game(game)
+        elsif winning_user_id == game.host_user_id
+            game.update!(winning_player_id: winner.id, opponent_player_health: 0)
+        else
+            game.update!(winning_player_id: winner.id, host_player_health: 0)
+        end
+        winner.update!(gamesWon: increase_wins, win_rate: update_rate.round(2))
+        # debugger
+    end
 
     def get_card_map(game_cards)
         # start with empty object, for each game card, create an adding to the empty object as 
@@ -210,9 +233,10 @@ class PlayerActionsController < ApplicationController
         # debugger
         # updated_cards = game_cards.filter{|card| card.card_id != card1.id && card.id != card2.id}
         user_cards = UserCard.where("game_id = ?", game)
+        has_active_cards = user_cards.filter{|user_card| user_card.isActive}
         # GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: updated_cards.map{|game_card| UserCardSerializer.new(game_card)}, card_map: get_card_map(updated_cards)}
         GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: user_cards.map{|user_card| UserCardSerializer.new(user_card)}, card_map: get_card_map(user_cards)}
-
+        return has_active_cards.count
     end
 
     def update_game_cards(game, player_action, destroyed_card)
@@ -222,13 +246,22 @@ class PlayerActionsController < ApplicationController
             player_action.defending_user_card.update!(isActive: false)
         end
         user_cards = UserCard.where("game_id = ?", game)
+        has_active_cards = user_cards.filter{|user_card| user_card.isActive}
+
         # updated_cards = game_cards.filter{|card| card.card_id != destroyed_card.id}
         GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: user_cards.map{|user_card| UserCardSerializer.new(user_card)}, card_map: get_card_map(user_cards)}
+        return has_active_cards.count
     end
 
     def combat_result(game, attacking_player, messages)
         GameSessionChannel.broadcast_to game, {action: "combat-results", attacking_player: attacking_player.id, message: messages}
     end
+
+    def trigger_draw_game(game)
+        game.update!(draw: true)
+        GameSessionChannel.broadcast_to game, {action: "draw"}
+    end
+
 
 
 
