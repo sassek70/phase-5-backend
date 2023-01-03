@@ -15,17 +15,6 @@ class GamesController < ApplicationController
 
     end
 
-    # def results
-    #     game = Game.find_by!(game_key: params[:game_key])
-    #     winner = User.find(params[:winning_player_user_id])
-    #     increase_wins = winner.gamesWon + 1
-    #     update_rate = (increase_wins.to_f / winner.gamesPlayed.to_f) * 100
-    #     game.update!(winning_player_id: winner.id)
-    #     winner.update!(gamesWon: increase_wins, win_rate: update_rate.round(2))
-    #     # debugger
-    # end
-
-
 
     def join_game
         game = Game.find_by!(game_key: params[:game_key])

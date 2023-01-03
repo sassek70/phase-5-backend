@@ -11,9 +11,10 @@ class GameSessionChannel < ApplicationCable::Channel
     stream_for game
   end
 
-  # def received(data)
-  #   ActionCable.server.broadcast(@game)
-  # end
+  def received(data)
+    game = Game.find_by(game_key: params[:game_key])
+    ActionCable.server.broadcast(game, data)
+  end
 
   def unsubscribe
     # Any cleanup needed when channel is unsubscribed
