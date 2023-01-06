@@ -6,8 +6,7 @@ class UsersController < ApplicationController
 
     def leaderboard
         users = User.all 
-        # users.each |user| {user.gamesWon / user.gamesPlayed}
-        render json: users.order('win_rate DESC'), status: :ok
+        render json: users.order(win_rate: :DESC), status: :ok
     end
 
     def create

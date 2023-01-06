@@ -50,7 +50,7 @@ class PlayerActionsController < ApplicationController
         
         if ac.cardPower < dc.cardDefense && dc.cardPower < ac.cardDefense
             defended_action = player_action.update!(draw: true)
-            combat_result(game, player_action.attacking_user_card.user, "CASE 1 #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has completely blocked the attack")
+            combat_result(game, player_action.attacking_user_card.user, "#{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has completely blocked the attack")
         
         
 # ******************************************************CASE 2 CASE 2 CASE 2 CASE 2***************************************************** #
@@ -65,7 +65,7 @@ class PlayerActionsController < ApplicationController
 
             # GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
 
-            combat_result(game, player_action.attacking_user_card.user, "CASE 2 Both cards have been destroyed A:#{ac.cardPower}/#{ac.cardDefense}, D: #{dc.cardPower}/#{dc.cardDefense}, #{player_action.defending_user_card.user.username}")
+            combat_result(game, player_action.attacking_user_card.user, "Both cards have been destroyed A:#{ac.cardPower}/#{ac.cardDefense}, D: #{dc.cardPower}/#{dc.cardDefense}, #{player_action.defending_user_card.user.username}")
 
 # ******************************************************CASE 3 CASE 3 CASE 3 CASE 3***************************************************** #
     # case 3 = attacking card dies & all damaged blocked = working
@@ -74,7 +74,7 @@ class PlayerActionsController < ApplicationController
             defended_action = player_action.update!(winning_card_id: dc.id)
 
             update_game_cards(game.id, player_action, ac)
-            combat_result(game, player_action.attacking_user_card.user, "CASE 3 #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has blocked the attack. #{player_action.attacking_user_card.user.username}'s #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense} has been destroyed")            
+            combat_result(game, player_action.attacking_user_card.user, "#{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has blocked the attack. #{player_action.attacking_user_card.user.username}'s #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense} has been destroyed")            
 
 
 
@@ -105,7 +105,7 @@ class PlayerActionsController < ApplicationController
                 end
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
             end
-            combat_result(game, player_action.attacking_user_card.user, "CASE 4 #{player_action.attacking_user_card.user.username}'s #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense} was destroyed in the attack by #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense}. Remaining #{unblocked_damage} damage has been dealt to #{player_action.defending_user_card.user.username}")
+            combat_result(game, player_action.attacking_user_card.user, "#{player_action.attacking_user_card.user.username}'s #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense} was destroyed in the attack by #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense}. Remaining #{unblocked_damage} damage has been dealt to #{player_action.defending_user_card.user.username}")
 
 
 
@@ -115,7 +115,7 @@ class PlayerActionsController < ApplicationController
         elsif ac.cardPower == dc.cardDefense && dc.cardPower < ac.cardDefense 
             defended_action = player_action.update!(winning_card_id: ac.id)
             update_game_cards(game.id, player_action, dc)
-            combat_result(game, player_action.attacking_user_card.user, "CASE 5 #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} was destroyed blocking the attacking #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense}.")    
+            combat_result(game, player_action.attacking_user_card.user, "#{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} was destroyed blocking the attacking #{ac.cardName} #{ac.cardPower}/#{ac.cardDefense}.")    
             # debugger
 
 # ******************************************************CASE 6 CASE 6 CASE 6 CASE 6***************************************************** #
@@ -145,7 +145,7 @@ class PlayerActionsController < ApplicationController
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
             end
 
-            combat_result(game, player_action.attacking_user_card.user, "CASE 6 #{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has been destroyed by attacking #{ac.cardPower}/#{ac.cardDefense}. Remaining #{unblocked_damage} damage has been dealt to #{player_action.defending_user_card.user.username}")
+            combat_result(game, player_action.attacking_user_card.user, "#{player_action.defending_user_card.user.username}'s #{dc.cardName} #{dc.cardPower}/#{dc.cardDefense} has been destroyed by attacking #{ac.cardPower}/#{ac.cardDefense}. Remaining #{unblocked_damage} damage has been dealt to #{player_action.defending_user_card.user.username}")
         end
     end
         
@@ -176,7 +176,7 @@ class PlayerActionsController < ApplicationController
                 GameSessionChannel.broadcast_to game, {action: "update-health", player: "host", health: update_player_health}
             end
 
-            combat_result(game, player_action.attacking_user_card.user, "CASE 7 Attack #{ac.cardPower}/#{ac.cardDefense} was not blocked, defender lost #{ac.cardPower} health")
+            combat_result(game, player_action.attacking_user_card.user, "Attack #{ac.cardPower}/#{ac.cardDefense} was not blocked, defender lost #{ac.cardPower} health")
 
         end
 
@@ -189,7 +189,7 @@ class PlayerActionsController < ApplicationController
             new_action = PlayerAction.create!(game_id: game.id, skipped: true)
 
 
-            combat_result(game, player, "CASE 8 #{player} has skipped their turn")
+            combat_result(game, player, "#{player.username} has skipped their turn")
         end
 
 

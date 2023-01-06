@@ -34,8 +34,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_223156) do
     t.integer "winning_player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "host_player_health", default: 15
-    t.integer "opponent_player_health", default: 15
+    t.integer "host_player_health", default: 20
+    t.integer "opponent_player_health", default: 20
     t.boolean "draw", default: false
   end
 
@@ -75,7 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_223156) do
     t.datetime "updated_at", null: false
     t.integer "gamesPlayed"
     t.integer "gamesWon"
-    t.float "win_rate"
+    t.float "win_rate", default: 0.0
   end
 
 end
