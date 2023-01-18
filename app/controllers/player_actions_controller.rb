@@ -242,15 +242,24 @@ class PlayerActionsController < ApplicationController
     def update_game_cards(game, player_action, destroyed_card)
         if destroyed_card.id == player_action.attacking_card.id 
             player_action.attacking_user_card.update!(isActive: false)
+            # debugger
+            # GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: UserCardSerializer.new(player_action.attacking_user_card)}
+            GameSessionChannel.broadcast_to game, {action: "update-cards", destroyed_user_cards: [player_action.attacking_user_card]}
+
         else destroyed_card.id == player_action.defending_card.id
+            # debugger
             player_action.defending_user_card.update!(isActive: false)
+            # GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: UserCardSerializer.new(player_action.defending_user_card)}
+            GameSessionChannel.broadcast_to game, {action: "update-cards", destroyed_user_cards: [player_action.defending_user_card]}
+
         end
-        user_cards = UserCard.where("game_id = ?", game)
-        has_active_cards = user_cards.filter{|user_card| user_card.isActive}
+        # user_cards = UserCard.where("game_id = ?", game)
+        # has_active_cards = user_cards.filter{|user_card| user_card.isActive}
 
         # updated_cards = game_cards.filter{|card| card.card_id != destroyed_card.id}
-        GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: user_cards.map{|user_card| UserCardSerializer.new(user_card)}, card_map: get_card_map(user_cards)}
-        return has_active_cards.count
+        # GameSessionChannel.broadcast_to game, {action: "update-cards", game_cards: user_cards.map{|user_card| UserCardSerializer.new(user_card)}, card_map: get_card_map(user_cards)}
+        # return has_active_cards.count
+        return 
     end
 
     def combat_result(game, attacking_player, messages)
