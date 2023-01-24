@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :player_action_cards
+  # resources :player_action_cards
   resources :player_actions
-  resources :game_actions
+  # resources :game_actions
   resources :user_cards, only: [:create, :destroy]
   resources :cards, only: [:create]
 
@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   patch '/joingame/:game_key', to: 'games#join_game'
   get '/users/:id/stats', to: 'users#stats'
   get '/leaderboard', to: 'users#leaderboard'
+  patch '/game/:game_key/draw', to: 'games#update'
   
   
   mount ActionCable.server => '/cable'

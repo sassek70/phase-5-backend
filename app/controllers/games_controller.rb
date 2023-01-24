@@ -6,11 +6,7 @@ class GamesController < ApplicationController
     def create_game
         new_game = Game.create!(host_user_id: params[:id])
         user = User.find(params[:id])
-        # increase_games = user.gamesPlayed + 1
         user.update!(gamesPlayed: user.gamesPlayed + 1)
-        # debugger
-        # user.update!(gamesPlayed: user.gamesPlayed += 1)
-        # user.update_attribute(:gamesPlayed, increase_games)
         render json: new_game, status: :ok
 
     end
@@ -25,14 +21,14 @@ class GamesController < ApplicationController
             game.update!(opponent_id: params[:opponent_id])
             user.update!(gamesPlayed: user.gamesPlayed + 1)
             GameSessionChannel.broadcast_to game, {action: "user-joined", game: game, message: "Opponent has joined the game"}
-             render json: game, status: :accepted
+            render json: game, status: :accepted
         end
     end
 
-    private
-
-    def game_params
-        params.permit(:user_id, :game_token)
+    def update
+        game = Game.find_by!(game_key: params[:game_key])
+        game.update!(draw: params[:draw])
+        head :ok
     end
 
 end
