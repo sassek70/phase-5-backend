@@ -15,7 +15,6 @@ class UserCardsController < ApplicationController
         random_deck = []
         1.times do
             card = Card.first
-            
             # card = Card.all.sample
             player_card = UserCard.create!(user_id: params[:player_id], card_id: card.id, game_id: params[:game_id])
             random_deck << player_card
