@@ -1,24 +1,11 @@
-# README
+## Getting started
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. Make sure PostgreSQL server is running
+  ```sudo service postgresql start```
+  
+2. Start the Rails server
+  ```rails s```
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+3. To run this program locally, you will need to seed the database with the card data from the [Scryfall API](https://scryfall.com/docs/api/cards). By default, the 200 cards will be created and added to the database. You can change this number by altering the `seeds.rb` file located at `/db/seeds.rb`
+ 
+ Note: `sleep 0.1` is required to limit the rate at which api calls are being made to meet the API requirements.
