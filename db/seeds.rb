@@ -9,6 +9,7 @@ User.create(username: "test", password: "123456", gamesPlayed: 0, gamesWon: 0, w
 p "Users created successfully"
 
 p "Creating cards..."
+
 created_cards = 0
 until created_cards == 200 do
     url = "https://api.scryfall.com/cards/random"
@@ -23,21 +24,14 @@ until created_cards == 200 do
          else
             p "card invalid"
          end
+         # sleep required to reduce API call rate to meet the API's rate specification.
         sleep 0.1
     else
         p "not a creature"
         sleep 0.1
-        # return
     end
 end
 
 p "Cards created successfully"
-
-# p "Assigning cards..."
-
-# seeded_cards = Card.all
-# seeded_cards.each { |card| UserCard.create(user_id: rand(1..2), card_id: card.id)}
-
-# p "Cards assigned"
 
 p "Seeding Complete"
