@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
 
-    # skip_before_action :authorize!, only: [:update]
     before_action :authorize!, only: [:update, :delete]
-
 
     def leaderboard
         users = User.all 

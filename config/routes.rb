@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  # resources :player_action_cards
-  resources :player_actions
-  # resources :game_actions
   resources :user_cards, only: [:create, :destroy]
   resources :cards, only: [:create]
 

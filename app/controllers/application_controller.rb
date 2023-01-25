@@ -2,7 +2,6 @@ class ApplicationController < ActionController::API
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
     rescue_from ActiveRecord::RecordInvalid, with: :invalid
 
-    
     def current_user 
         auth_token = request.headers['uid']
         if auth_token
@@ -11,7 +10,6 @@ class ApplicationController < ActionController::API
         else
             return nil
         end
-        # debugger
     end
     
     def authorize!

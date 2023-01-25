@@ -41,11 +41,6 @@ class CardsController < ApplicationController
     # end
 end
 
-
-
-
-
-
 # { SCRY API
 #     "object": "card",
 #     "id": "62982dab-4c27-45b3-9740-38fec3df7226",
