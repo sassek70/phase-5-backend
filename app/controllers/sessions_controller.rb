@@ -16,4 +16,5 @@ class SessionsController < ApplicationController
             @user = User.find_by(id: token['auth_token_id'])
             render json: @user, status: :ok
     end
+    
 end

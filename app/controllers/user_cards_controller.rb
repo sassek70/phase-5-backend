@@ -1,15 +1,5 @@
 class UserCardsController < ApplicationController
 
-
-    # def game_cards
-    #     cards_with_details = {}
-    #     game = Game.find(params[:game_id])
-    #     game_cards = UserCard.where("game_id = ?", game.id)
-    #     GameSessionChannel.broadcast_to game, {action: "all-cards", game_cards: game_cards, card_map: get_card_map(game_cards)}
-    #     render json: game_cards, status: :ok
-    # end
-
-
     def create_random_deck
         game = Game.find(params[:game_id])
         random_deck = []
@@ -25,7 +15,6 @@ class UserCardsController < ApplicationController
         render json: random_deck, status: :ok
 
     end
-
 
     def get_card_map(game_cards)
         # start with empty object, for each game card, create an adding to the empty object as 

@@ -1,6 +1,5 @@
 class GamesController < ApplicationController
 
-
     before_action :authorize!, only: [:create_game]
 
     def create_game
@@ -10,7 +9,6 @@ class GamesController < ApplicationController
         render json: new_game, status: :ok
 
     end
-
 
     def join_game
         game = Game.find_by!(game_key: params[:game_key])
