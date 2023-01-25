@@ -7,4 +7,5 @@ class UserCardSerializer < ActiveModel::Serializer
 
   has_many :player_action_cards
   has_many :player_actions, through: :player_action_cards
+  
 end

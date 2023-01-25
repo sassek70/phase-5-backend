@@ -98,7 +98,6 @@ class PlayerActionsController < ApplicationController
         def no_defense(game, player_action, defending_player, ac)
             health_update(defending_player, game, ac.cardPower)
             combat_result(game, player_action.attacking_user_card.user, "Attack #{ac.cardPower}/#{ac.cardDefense} was not blocked, defender lost #{ac.cardPower} health")
-
         end
 
 # ******************************************************CASE 8 CASE 8 CASE 8 CASE 8***************************************************** #

@@ -15,4 +15,5 @@ class GameSessionChannel < ApplicationCable::Channel
     puts "unsubscribed"
     stop_all_streams
   end
+  
 end
