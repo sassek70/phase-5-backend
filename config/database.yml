@@ -88,6 +88,8 @@ production:
   username: card_game_backend
   password: <%= ENV["CARD_GAME_BACKEND_DATABASE_PASSWORD"] %>
 
+  url: <%= ENV['DATABASE_URL'] %>
+
 
 
 
