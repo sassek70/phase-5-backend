@@ -84,9 +84,10 @@ test:
 # Uncomment 85-89
 production:
   <<: *default
-  database: card_game_backend_production
-  username: card_game_backend
-  password: <%= ENV["CARD_GAME_BACKEND_DATABASE_PASSWORD"] %>
+  # database: card_game_backend_production
+  # username: card_game_backend
+  # password: <%= ENV["CARD_GAME_BACKEND_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 
 
