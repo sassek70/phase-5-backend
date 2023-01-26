@@ -8,7 +8,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     #change this to front end url for deployment
-    origins "*"
+    origins "https://a-not-so-magical-gathering.onrender.com"
 
     resource "*",
       headers: :any,
