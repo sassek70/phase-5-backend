@@ -1,10 +1,11 @@
 require 'rest-client'
 
 # Clear all cards from the database before seeding.
-Card.all.destroy
-UserCard.all.destroy
-PlayerActionCard.all.destroy
-PlayerAction.all.destroy
+p "Clearing existing Card data."
+Card.destroy_all
+UserCard.destroy_all
+PlayerActionCard.destroy_all
+PlayerAction.destroy_all
 
 # p "Creating users..."
 
@@ -21,7 +22,7 @@ until created_cards == 200 do
     response = RestClient.get(url)
     parsed = JSON.parse(response)
     # filter api responses to only include "creature type" cards
-    if parsed["type_line"].include?("Creature") && parsed["power"] != nil && parsed["power"] > "0" && parsed["power"] <= 5 && parsed["toughness"] != nil && parsed["toughness"] > "0" && parsed["toughness"] <= 5 && parsed["image_uris"] != nil && parsed["image_uris"]["art_crop"] != nil && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"] 
+    if parsed["type_line"].include?("Creature") && parsed["power"] != nil && parsed["power"] > "0" && parsed["power"] <= "5" && parsed["toughness"] != nil && parsed["toughness"] > "0" && parsed["toughness"] <= "5" && parsed["image_uris"] != nil && parsed["image_uris"]["art_crop"] != nil && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"] 
         new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardArtist: "#{parsed["artist"]}", cardDescription: "Art-crop image provided by: https://scryfall.com/", cardImage: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
          if new_card.valid?
             new_card.save
@@ -38,6 +39,6 @@ until created_cards == 200 do
     end
 end
 
-p "Cards created successfully"
+p "Cards created successfully."
 
-p "Seeding Complete"
+p "Seeding Complete."
