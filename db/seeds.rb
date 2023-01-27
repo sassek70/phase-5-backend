@@ -1,10 +1,10 @@
 require 'rest-client'
 
 # Clear all cards from the database before seeding.
-Card.all.delete
-UserCard.all.delete
-PlayerActionCard.all.delete
-PlayerAction.all.delete
+Card.all.destroy
+UserCard.all.destroy
+PlayerActionCard.all.destroy
+PlayerAction.all.destroy
 
 # p "Creating users..."
 
