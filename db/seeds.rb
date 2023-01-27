@@ -1,12 +1,17 @@
 require 'rest-client'
 
+# Clear all cards from the database before seeding.
+Card.all.delete
+UserCard.all.delete
+PlayerActionCard.all.delete
+PlayerAction.all.delete
 
-p "Creating users..."
+# p "Creating users..."
 
-User.create(username: "kev", password: "123456", gamesPlayed: 0, gamesWon: 0, win_rate: 0)
-User.create(username: "test", password: "123456", gamesPlayed: 0, gamesWon: 0, win_rate: 0)
+# User.create(username: "kev", password: "123456", gamesPlayed: 0, gamesWon: 0, win_rate: 0)
+# User.create(username: "test", password: "123456", gamesPlayed: 0, gamesWon: 0, win_rate: 0)
 
-p "Users created successfully"
+# p "Users created successfully"
 
 p "Creating cards..."
 
@@ -15,7 +20,8 @@ until created_cards == 200 do
     url = "https://api.scryfall.com/cards/random"
     response = RestClient.get(url)
     parsed = JSON.parse(response)
-    if parsed["type_line"].include?("Creature") && parsed["power"] != nil && parsed["power"] >= "0" && parsed["toughness"] != nil && parsed["toughness"] >= "0" && parsed["image_uris"] != nil && parsed["image_uris"]["art_crop"] != nil && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"] 
+    # filter api responses to only include "creature type" cards
+    if parsed["type_line"].include?("Creature") && parsed["power"] != nil && parsed["power"] > "0" && parsed["power"] <= 5 && parsed["toughness"] != nil && parsed["toughness"] > "0" && parsed["toughness"] <= 5 && parsed["image_uris"] != nil && parsed["image_uris"]["art_crop"] != nil && parsed["image_uris"]["art_crop"] && parsed["cmc"] && parsed["mtgo_id"] 
         new_card = Card.new(cardName: parsed["name"], cardPower: parsed["power"], cardDefense: parsed["toughness"], cardArtist: "#{parsed["artist"]}", cardDescription: "Art-crop image provided by: https://scryfall.com/", cardImage: "#{parsed["image_uris"]["art_crop"]}", mtgo_id: parsed["mtgo_id"], cardCost: parsed["cmc"])
          if new_card.valid?
             new_card.save
