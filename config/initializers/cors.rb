@@ -15,12 +15,12 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       methods: [:get, :post, :patch, :delete, :options, :head]
   end
 
-  allow do
-    #change this to front end url for deployment
-    origins "localhost:4000"
+  # allow do
+  #   #change this to front end url for deployment
+  #   origins "localhost:4000"
 
-    resource "*",
-      headers: :any,
-      methods: [:get, :post, :patch, :delete, :options, :head]
-  end
+  #   resource "*",
+  #     headers: :any,
+  #     methods: [:get, :post, :patch, :delete, :options, :head]
+  # end
 end
